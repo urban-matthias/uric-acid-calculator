@@ -13,6 +13,8 @@ public class Receipts
 {
 	private static final String	SHARED_PREFS		= "com.urban.app.uac";
 	private static final String	SHARED_PREFS_LAST	= "com.urban.app.uac.last";
+	private static final String	LAST_RECEIPT		= "last.receipt";
+	private static final String	LAST_LIMIT			= "last.limit";
 
 	private Activity			activity			= null;
 
@@ -33,12 +35,26 @@ public class Receipts
 
 	public void saveCurrentReceipt(ArrayAdapter<Ingredient> receipt)
 	{
-		saveReceipt(SHARED_PREFS_LAST, SHARED_PREFS_LAST, receipt);
+		saveReceipt(LAST_RECEIPT, SHARED_PREFS_LAST, receipt);
 	}
 
 	public ArrayList<Ingredient> loadLastReceipt()
 	{
-		return loadReceipt(SHARED_PREFS_LAST, SHARED_PREFS_LAST);
+		return loadReceipt(LAST_RECEIPT, SHARED_PREFS_LAST);
+	}
+
+	public void saveCurrentLimit(int limit)
+	{
+		SharedPreferences prefs = activity.getSharedPreferences(SHARED_PREFS_LAST, 0);
+		SharedPreferences.Editor editor = prefs.edit();
+		editor.putInt(LAST_LIMIT, limit);
+		editor.commit();
+	}
+
+	public int loadLastLimit(int default_limit)
+	{
+		SharedPreferences prefs = activity.getSharedPreferences(SHARED_PREFS_LAST, 0);
+		return prefs.getInt(LAST_LIMIT, default_limit);
 	}
 
 	public boolean exists(String name)
@@ -46,7 +62,7 @@ public class Receipts
 		SharedPreferences prefs = activity.getSharedPreferences(SHARED_PREFS, 0);
 		return prefs.contains(name);
 	}
-	
+
 	public void deleteReceipt(String name)
 	{
 		SharedPreferences prefs = activity.getSharedPreferences(SHARED_PREFS, 0);

@@ -30,6 +30,6 @@
     <string name="btn_db_entry_cancel">Abbrechen</string>
     <string name="btn_db_entry_delete">Löschen</string>
     <string name="dialog_delete_db_entry">Aus Datenbank entfernen?</string>
-    <string name="limit_exceeded">Grenzwert überschritten!</string>
+    <string name="limit_exceeded">%1 Harnsäure überschritten!</string>
 
 </resources>

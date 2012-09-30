@@ -38,7 +38,7 @@ public class MainActivity extends Activity
 	private String				labelKcal		= null;
 	private ReceiptListAdapter	receipt			= null;
 	private Receipts			receipts		= null;
-	private int					limit			= 500;
+	private int					limit			= 0;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -53,6 +53,8 @@ public class MainActivity extends Activity
 		sumTextField = (TextView) findViewById(R.id.sum);
 
 		receipts = new Receipts(this);
+
+		limit = receipts.loadLastLimit(500); // defaults to 500 mg per day
 
 		ArrayList<Ingredient> last_receipt = receipts.loadLastReceipt();
 		if (last_receipt == null)
@@ -147,9 +149,10 @@ public class MainActivity extends Activity
 		if (sumUricAcid > limit)
 		{
 			sumTextField.setTextColor(Color.RED);
+			String msg = getString(R.string.limit_exceeded).replace("%1", limit + " " + labelMg);
 			try
 			{
-				Toast.makeText(getApplicationContext(), R.string.limit_exceeded, Toast.LENGTH_LONG).show();
+				Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
 			}
 			catch (Throwable ignore)
 			{
@@ -172,6 +175,7 @@ public class MainActivity extends Activity
 	{
 		DataBaseManager.instance().close();
 		receipts.saveCurrentReceipt(receipt);
+		receipts.saveCurrentLimit(limit);
 		super.onDestroy();
 	}
 
