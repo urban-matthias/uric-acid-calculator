@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/load_receipt"
+        android:icon="@drawable/ic_menu_archive"
+        android:title="@string/menu_load_receipt">
+    </item>
+    <item
+        android:id="@+id/save_receipt"
+        android:icon="@drawable/ic_menu_save"
+        android:title="@string/menu_save_receipt">
+    </item>
+    <item
+        android:id="@+id/delete_receipt"
+        android:icon="@drawable/ic_menu_delete"
+        android:title="@string/menu_delete_receipt">
+    </item>
+    <item
+        android:id="@+id/menu_more"
+        android:icon="@drawable/ic_menu_more"
+        android:title="@string/menu_more">
+        <menu>
+            <item
+                android:id="@+id/set_limit"
+                android:icon="@drawable/ic_menu_crop"
+                android:title="@string/menu_set_limit">
+            </item>
+            <item
+                android:id="@+id/restore_db"
+                android:icon="@drawable/ic_menu_revert"
+                android:title="@string/menu_restore_db">
+            </item>
+        </menu>
+    </item>
+
+</menu>
