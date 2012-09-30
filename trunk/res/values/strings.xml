@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Uric Acid Calculator</string>
+    <string name="lang">en</string>
+    <string name="mg">mg</string>
+    <string name="kcal">kcal</string>
+    <string name="search_box_hint">Search term</string>
+    <string name="btn_receipt_add">Add</string>
+    <string name="btn_receipt_clear">Clear</string>
+    <string name="btn_ok">OK</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="dialog_amount">Enter amount</string>
+    <string name="dialog_save">Enter name</string>
+    <string name="dialog_discard_ingredient">Remove from list?</string>
+    <string name="menu_load_receipt">Load</string>
+    <string name="menu_save_receipt">Save</string>
+    <string name="menu_delete_receipt">Delete</string>
+    <string name="menu_set_limit">Limit</string>
+    <string name="menu_add_db_entry">New</string>
+    <string name="menu_restore_db">Restore</string>
+    <string name="menu_more">More</string>
+    <string name="dialog_restore_db">Restore original database?</string>
+    <string name="db_restored">Original database restored</string>
+    <string name="db_entry_name">Name of database entry</string>
+    <string name="db_entry_unit">Unit symbol</string>
+    <string name="dn_entry_uric_acid">Produced uric acid (in milligram)</string>
+    <string name="db_entry_kcal">Caloric value (in kilocalories)</string>
+    <string name="btn_db_entry_save">Save</string>
+    <string name="btn_db_entry_cancel">Cancel</string>
+    <string name="btn_db_entry_delete">Delete</string>
+    <string name="dialog_delete_db_entry">Remove from database?</string>
+    <string name="limit_exceeded">Uric acid limit exceeded!</string>
+    
+</resources>

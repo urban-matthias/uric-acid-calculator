@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Harnsäure Rechner</string>
+    <string name="lang">de</string>
+    <string name="mg">mg</string>
+    <string name="kcal">kcal</string>
+    <string name="search_box_hint">Suchbegriff</string>
+    <string name="btn_receipt_add">Hinzufügen</string>
+    <string name="btn_receipt_clear">Verwerfen</string>
+    <string name="btn_ok">Ok</string>
+    <string name="btn_cancel">Abbrechen</string>
+    <string name="dialog_amount">Menge</string>
+    <string name="dialog_save">Name</string>
+    <string name="dialog_discard_ingredient">Aus Liste entfernen?</string>
+    <string name="menu_load_receipt">Laden</string>
+    <string name="menu_save_receipt">Speichern</string>
+    <string name="menu_delete_receipt">Löschen</string>
+    <string name="menu_set_limit">Grenzwert</string>
+    <string name="menu_add_db_entry">Neu</string>
+    <string name="menu_restore_db">Wiederherstellen</string>
+    <string name="menu_more">Mehr</string>
+    <string name="dialog_restore_db">Originaldatenbank wiederherstellen?</string>
+    <string name="db_restored">Originaldatenbank wiederhergestellt</string>
+    <string name="db_entry_name">Name des Datenbankeintrages</string>
+    <string name="db_entry_unit">Einheitenzeichen</string>
+    <string name="dn_entry_uric_acid">Gebildete Harnsäure (in Milligramm)</string>
+    <string name="db_entry_kcal">Brennwert (in Kilokalorien)</string>
+    <string name="btn_db_entry_save">Speichern</string>
+    <string name="btn_db_entry_cancel">Abbrechen</string>
+    <string name="btn_db_entry_delete">Löschen</string>
+    <string name="dialog_delete_db_entry">Aus Datenbank entfernen?</string>
+    <string name="limit_exceeded">Grenzwert überschritten!</string>
+
+</resources>
