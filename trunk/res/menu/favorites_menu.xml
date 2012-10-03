@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/select_fav"
+        android:title="@string/menu_select_fav">
+    </item>
+    <item
+        android:id="@+id/add_fav"
+        android:title="@string/menu_add_fav">
+    </item>
+    <item
+        android:id="@+id/remove_fav"
+        android:title="@string/menu_remove_fav">
+    </item>
+
+</menu>

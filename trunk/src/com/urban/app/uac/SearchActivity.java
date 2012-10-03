@@ -8,6 +8,7 @@ import android.database.DatabaseUtils;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,13 +26,18 @@ import com.urban.app.uac.SearchActivity.SearchListCursorAdapter.ViewHolder;
 import com.urban.app.uac.data.DBConsts;
 import com.urban.app.uac.data.DataBaseManager;
 import com.urban.app.uac.data.Ingredient;
+import com.urban.app.uac.dialog.SelectionDialog;
+import com.urban.app.uac.util.SharedPrefs;
 
 public class SearchActivity extends Activity
 {
-	private DataBaseManager		dataBase		= null;
-	private ListView			list_view		= null;
+	private static final String	SHARED_PREFS_FAVORITES	= "com.urban.app.uac.search.favorites";
 
-	public static final String	SEARCH_RESULT	= "search_result";
+	private DataBaseManager		dataBase				= null;
+	private ListView			search_list				= null;
+	private EditText			search_box				= null;
+
+	public static final String	SEARCH_RESULT			= "search_result";
 
 	/** Called when the activity is first created. */
 	@Override
@@ -47,11 +53,12 @@ public class SearchActivity extends Activity
 
 		ListAdapter adapter = new SearchListCursorAdapter(this, cursor);
 
-		list_view = (ListView) findViewById(R.id.search_list);
-		list_view.setAdapter(adapter);
-		list_view.setTextFilterEnabled(true);
+		search_list = (ListView) findViewById(R.id.search_list);
+		search_list.setAdapter(adapter);
+		search_list.setTextFilterEnabled(true);
 
-		list_view.setOnItemClickListener(new AdapterView.OnItemClickListener()
+		// Select entry on short click
+		search_list.setOnItemClickListener(new AdapterView.OnItemClickListener()
 		{
 			public void onItemClick(AdapterView<?> parent, View view, int pos, long id)
 			{
@@ -75,7 +82,8 @@ public class SearchActivity extends Activity
 			}
 		});
 
-		list_view.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
+		// Edit entry on long click
+		search_list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
 		{
 			public boolean onItemLongClick(AdapterView<?> parent, View view, int pos, long id)
 			{
@@ -89,7 +97,12 @@ public class SearchActivity extends Activity
 			}
 		});
 
-		EditText search_box = (EditText) findViewById(R.id.search_box);
+		search_box = (EditText) findViewById(R.id.search_box);
+
+		// Favorites context menu for search box
+		registerForContextMenu(search_box);
+
+		// Filter list view while typing
 		search_box.addTextChangedListener(new TextWatcher()
 		{
 			public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3)
@@ -117,10 +130,84 @@ public class SearchActivity extends Activity
 				startManagingCursor(cursor);
 
 				ListAdapter adapter = new SearchListCursorAdapter(SearchActivity.this, cursor);
-				list_view.setAdapter(adapter);
-				list_view.invalidate();
+				search_list.setAdapter(adapter);
+				search_list.invalidate();
 			}
 		});
+	}
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo)
+	{
+		if (view.getId() == R.id.search_box)
+		{
+			menu.clear();
+			menu.setHeaderTitle(R.string.menu_title_fav);
+			MenuInflater inflater = getMenuInflater();
+			inflater.inflate(R.menu.favorites_menu, menu);
+		}
+		else
+		{
+			super.onCreateContextMenu(menu, view, menuInfo);
+		}
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item)
+	{
+		switch (item.getItemId())
+		{
+		case R.id.select_fav:
+			selectFavorite();
+			break;
+		case R.id.add_fav:
+			addFavorite();
+			break;
+		case R.id.remove_fav:
+			removeFavorite();
+			break;
+		default:
+			return super.onContextItemSelected(item);
+		}
+		return true;
+	}
+
+	private void removeFavorite()
+	{
+		String[] favorites = SharedPrefs.getAllSorted(SHARED_PREFS_FAVORITES);
+		SelectionDialog dialog = new SelectionDialog(this, R.string.menu_remove_fav, favorites, false)
+		{
+			@Override
+			public boolean onSelection(int which)
+			{
+				String favorite = selections[which];
+				SharedPrefs.delete(SHARED_PREFS_FAVORITES, favorite);
+				return true;
+			}
+		};
+		dialog.show();
+	}
+
+	private void addFavorite()
+	{
+		String favorite = search_box.getText().toString();
+		SharedPrefs.save(SHARED_PREFS_FAVORITES, favorite, "");
+	}
+
+	private void selectFavorite()
+	{
+		String[] favorites = SharedPrefs.getAllSorted(SHARED_PREFS_FAVORITES);
+		SelectionDialog dialog = new SelectionDialog(this, R.string.menu_select_fav, favorites, false)
+		{
+			@Override
+			public boolean onSelection(int which)
+			{
+				String favorite = selections[which];
+				search_box.setText(favorite);
+				return true;
+			}
+		};
+		dialog.show();
 	}
 
 	@Override

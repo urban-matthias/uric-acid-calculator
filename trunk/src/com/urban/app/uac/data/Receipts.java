@@ -3,95 +3,63 @@ package com.urban.app.uac.data;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import android.app.Activity;
-import android.content.SharedPreferences;
 import android.widget.ArrayAdapter;
 
 import com.urban.app.uac.util.Base64;
+import com.urban.app.uac.util.SharedPrefs;
 
 public class Receipts
 {
-	private static final String	SHARED_PREFS		= "com.urban.app.uac";
-	private static final String	SHARED_PREFS_LAST	= "com.urban.app.uac.last";
-	private static final String	LAST_RECEIPT		= "last.receipt";
-	private static final String	LAST_LIMIT			= "last.limit";
+	private static final String	SHARED_PREFS		= "com.urban.app.uac.receipts";
+	private static final String	SHARED_PREFS_LAST	= "com.urban.app.uac.receipts.last";
+	private static final String	LAST_RECEIPT		= "receipt";
 
-	private Activity			activity			= null;
-
-	public Receipts(Activity activity)
-	{
-		this.activity = activity;
-	}
-
-	public void saveReceipt(String name, ArrayAdapter<Ingredient> receipt)
+	public static void saveReceipt(String name, ArrayAdapter<Ingredient> receipt)
 	{
 		saveReceipt(SHARED_PREFS, name, receipt);
 	}
 
-	public ArrayList<Ingredient> loadReceipt(String name)
+	public static ArrayList<Ingredient> loadReceipt(String name)
 	{
 		return loadReceipt(SHARED_PREFS, name);
 	}
 
-	public void saveCurrentReceipt(ArrayAdapter<Ingredient> receipt)
+	public static void saveCurrentReceipt(ArrayAdapter<Ingredient> receipt)
 	{
 		saveReceipt(LAST_RECEIPT, SHARED_PREFS_LAST, receipt);
 	}
 
-	public ArrayList<Ingredient> loadLastReceipt()
+	public static ArrayList<Ingredient> loadLastReceipt()
 	{
 		return loadReceipt(LAST_RECEIPT, SHARED_PREFS_LAST);
 	}
 
-	public void saveCurrentLimit(int limit)
+	public static boolean exists(String name)
 	{
-		SharedPreferences prefs = activity.getSharedPreferences(SHARED_PREFS_LAST, 0);
-		SharedPreferences.Editor editor = prefs.edit();
-		editor.putInt(LAST_LIMIT, limit);
-		editor.commit();
+		return SharedPrefs.exists(SHARED_PREFS, name);
 	}
 
-	public int loadLastLimit(int default_limit)
+	public static void deleteReceipt(String name)
 	{
-		SharedPreferences prefs = activity.getSharedPreferences(SHARED_PREFS_LAST, 0);
-		return prefs.getInt(LAST_LIMIT, default_limit);
+		SharedPrefs.delete(SHARED_PREFS, name);
 	}
 
-	public boolean exists(String name)
+	public static String[] getSortedReceiptNames()
 	{
-		SharedPreferences prefs = activity.getSharedPreferences(SHARED_PREFS, 0);
-		return prefs.contains(name);
-	}
-
-	public void deleteReceipt(String name)
-	{
-		SharedPreferences prefs = activity.getSharedPreferences(SHARED_PREFS, 0);
-		SharedPreferences.Editor editor = prefs.edit();
-		editor.remove(name);
-		editor.commit();
-	}
-
-	public String[] getSortedReceiptNames()
-	{
-		SharedPreferences prefs = activity.getSharedPreferences(SHARED_PREFS, 0);
-		String[] receipt_names = prefs.getAll().keySet().toArray(new String[0]);
+		String[] receipt_names = SharedPrefs.getAllSorted(SHARED_PREFS);
 		Arrays.sort(receipt_names);
 		return receipt_names;
 	}
 
-	private void saveReceipt(String pref, String name, ArrayAdapter<Ingredient> receipt)
+	private static void saveReceipt(String pref, String name, ArrayAdapter<Ingredient> receipt)
 	{
 		String serialized = serializeReceipt(receipt);
-		SharedPreferences prefs = activity.getSharedPreferences(pref, 0);
-		SharedPreferences.Editor editor = prefs.edit();
-		editor.putString(name, serialized);
-		editor.commit();
+		SharedPrefs.save(pref, name, serialized);
 	}
 
-	private ArrayList<Ingredient> loadReceipt(String pref, String name)
+	private static ArrayList<Ingredient> loadReceipt(String pref, String name)
 	{
-		SharedPreferences prefs = activity.getSharedPreferences(pref, 0);
-		String serialized = prefs.getString(name, "");
+		String serialized = SharedPrefs.load(pref, name, "");
 		ArrayList<Ingredient> receipt = null;
 		if (serialized.length() > 0)
 		{
@@ -100,7 +68,7 @@ public class Receipts
 		return receipt;
 	}
 
-	private String serializeReceipt(ArrayAdapter<Ingredient> receipt)
+	private static String serializeReceipt(ArrayAdapter<Ingredient> receipt)
 	{
 		ArrayList<Ingredient> list = new ArrayList<Ingredient>(receipt.getCount());
 		for (int i = 0; i < receipt.getCount(); i++)
@@ -120,7 +88,7 @@ public class Receipts
 	}
 
 	@SuppressWarnings("unchecked")
-	private ArrayList<Ingredient> deserializeReceipt(String serialized)
+	private static ArrayList<Ingredient> deserializeReceipt(String serialized)
 	{
 		ArrayList<Ingredient> receipt = null;
 		try
