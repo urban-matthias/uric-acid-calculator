@@ -31,5 +31,9 @@
     <string name="btn_db_entry_delete">Löschen</string>
     <string name="dialog_delete_db_entry">Aus Datenbank entfernen?</string>
     <string name="limit_exceeded">%1 Harnsäure überschritten!</string>
-
+    <string name="menu_title_fav">Favoriten</string>
+    <string name="menu_select_fav">Auswählen</string>
+    <string name="menu_add_fav">Hinzufügen</string>
+    <string name="menu_remove_fav">Entfernen</string>
+    
 </resources>

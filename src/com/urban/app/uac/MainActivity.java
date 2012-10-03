@@ -27,18 +27,20 @@ import com.urban.app.uac.data.Receipts;
 import com.urban.app.uac.dialog.ConfirmDialog;
 import com.urban.app.uac.dialog.InputDialog;
 import com.urban.app.uac.dialog.SelectionDialog;
+import com.urban.app.uac.util.SharedPrefs;
 
 public class MainActivity extends Activity
 {
-	public static final int		SEARCH_REQUEST	= 1;
+	public static final int		SEARCH_REQUEST		= 1;
+	private static final String	SHARED_PREFS_LIMIT	= "com.urban.app.uac.limit";
+	private static final String	PREF_LIMIT			= "limit";
 
-	private TextView			sumTextField	= null;
-	private ListView			receiptView		= null;
-	private String				labelMg			= null;
-	private String				labelKcal		= null;
-	private ReceiptListAdapter	receipt			= null;
-	private Receipts			receipts		= null;
-	private int					limit			= 0;
+	private TextView			sumTextField		= null;
+	private ListView			receiptView			= null;
+	private String				labelMg				= null;
+	private String				labelKcal			= null;
+	private ReceiptListAdapter	receipt				= null;
+	private int					limit				= 0;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -52,11 +54,9 @@ public class MainActivity extends Activity
 
 		sumTextField = (TextView) findViewById(R.id.sum);
 
-		receipts = new Receipts(this);
+		limit = SharedPrefs.load(SHARED_PREFS_LIMIT, PREF_LIMIT, 500); // defaults to 500 mg per day
 
-		limit = receipts.loadLastLimit(500); // defaults to 500 mg per day
-
-		ArrayList<Ingredient> last_receipt = receipts.loadLastReceipt();
+		ArrayList<Ingredient> last_receipt = Receipts.loadLastReceipt();
 		if (last_receipt == null)
 		{
 			last_receipt = new ArrayList<Ingredient>();
@@ -174,8 +174,8 @@ public class MainActivity extends Activity
 	protected void onDestroy()
 	{
 		DataBaseManager.instance().close();
-		receipts.saveCurrentReceipt(receipt);
-		receipts.saveCurrentLimit(limit);
+		Receipts.saveCurrentReceipt(receipt);
+		SharedPrefs.save(SHARED_PREFS_LIMIT, PREF_LIMIT, limit);
 		super.onDestroy();
 	}
 
@@ -215,13 +215,13 @@ public class MainActivity extends Activity
 
 	private void loadReceipt()
 	{
-		String[] receipt_names = receipts.getSortedReceiptNames();
+		String[] receipt_names = Receipts.getSortedReceiptNames();
 		SelectionDialog dialog = new SelectionDialog(this, R.string.menu_load_receipt, receipt_names, false)
 		{
 			@Override
 			public boolean onSelection(int which)
 			{
-				ArrayList<Ingredient> ingredients = receipts.loadReceipt(selections[which]);
+				ArrayList<Ingredient> ingredients = Receipts.loadReceipt(selections[which]);
 				receipt = new ReceiptListAdapter(MainActivity.this, R.layout.receipt_list_item, ingredients);
 				receiptView.setAdapter(receipt);
 				calcAndUpdateSum();
@@ -238,7 +238,7 @@ public class MainActivity extends Activity
 			@Override
 			public boolean onOkClicked(final String name)
 			{
-				receipts.saveReceipt(name, receipt);
+				Receipts.saveReceipt(name, receipt);
 				return true;
 			}
 		};
@@ -247,13 +247,13 @@ public class MainActivity extends Activity
 
 	private void deleteReceipt()
 	{
-		String[] receipt_names = receipts.getSortedReceiptNames();
+		String[] receipt_names = Receipts.getSortedReceiptNames();
 		SelectionDialog dialog = new SelectionDialog(this, R.string.menu_delete_receipt, receipt_names, false)
 		{
 			@Override
 			public boolean onSelection(int which)
 			{
-				receipts.deleteReceipt(selections[which]);
+				Receipts.deleteReceipt(selections[which]);
 				return true;
 			}
 		};
