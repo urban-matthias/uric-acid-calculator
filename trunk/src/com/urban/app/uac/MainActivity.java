@@ -41,6 +41,7 @@ public class MainActivity extends Activity
 	private String				labelKcal			= null;
 	private ReceiptListAdapter	receipt				= null;
 	private int					limit				= 0;
+	private String				lastLoaded			= "";
 
 	/** Called when the activity is first created. */
 	@Override
@@ -221,7 +222,8 @@ public class MainActivity extends Activity
 			@Override
 			public boolean onSelection(int which)
 			{
-				ArrayList<Ingredient> ingredients = Receipts.loadReceipt(selections[which]);
+				lastLoaded = selections[which];
+				ArrayList<Ingredient> ingredients = Receipts.loadReceipt(lastLoaded);
 				receipt = new ReceiptListAdapter(MainActivity.this, R.layout.receipt_list_item, ingredients);
 				receiptView.setAdapter(receipt);
 				calcAndUpdateSum();
@@ -233,7 +235,7 @@ public class MainActivity extends Activity
 
 	private void saveReceipt()
 	{
-		InputDialog dialog = new InputDialog(this, R.string.menu_save_receipt, InputDialog.TEXT, getString(R.string.dialog_save))
+		InputDialog dialog = new InputDialog(this, R.string.dialog_save, InputDialog.TEXT, lastLoaded)
 		{
 			@Override
 			public boolean onOkClicked(final String name)
