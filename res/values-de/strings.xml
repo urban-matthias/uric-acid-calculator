@@ -35,5 +35,10 @@
     <string name="menu_select_fav">Auswählen</string>
     <string name="menu_add_fav">Hinzufügen</string>
     <string name="menu_remove_fav">Entfernen</string>
+    <string name="menu_sort_db_entries">Sortiere</string>
+    <string name="dialog_sort">Sortiere nach</string>
+    <string name="sort_criterion_name">Name</string>
+    <string name="sort_criterion_uric_acid">Harnsäure</string>
+    <string name="sort_criterion_kcal">Kilokalorien</string>
     
 </resources>
