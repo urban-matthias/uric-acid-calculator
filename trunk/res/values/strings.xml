@@ -35,5 +35,10 @@
     <string name="menu_select_fav">Select</string>
     <string name="menu_add_fav">Add</string>
     <string name="menu_remove_fav">Remove</string>
+    <string name="menu_sort_db_entries">Sort</string>
+    <string name="dialog_sort">Sort by</string>
+    <string name="sort_criterion_name">Name</string>
+    <string name="sort_criterion_uric_acid">Uric Acid</string>
+    <string name="sort_criterion_kcal">Kilocalories</string>
     
 </resources>

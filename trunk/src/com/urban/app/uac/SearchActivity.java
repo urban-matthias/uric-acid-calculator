@@ -31,13 +31,16 @@ import com.urban.app.uac.util.SharedPrefs;
 
 public class SearchActivity extends Activity
 {
-	private static final String	SHARED_PREFS_FAVORITES	= "com.urban.app.uac.search.favorites";
+	private static final String	SHARED_PREFS_FAVORITES		= "com.urban.app.uac.search.favorites";
+	private static final String	SHARED_PREFS_SORT_CRITERION	= "com.urban.app.uac.search.sort.criterion";
+	private static final String	VALUE_ORDER_BY				= "OrderBy";
 
-	private DataBaseManager		dataBase				= null;
-	private ListView			search_list				= null;
-	private EditText			search_box				= null;
+	private DataBaseManager		database					= null;
+	private ListView			search_list					= null;
+	private EditText			search_box					= null;
+	private String				order_by					= null;
 
-	public static final String	SEARCH_RESULT			= "search_result";
+	public static final String	SEARCH_RESULT				= "search_result";
 
 	/** Called when the activity is first created. */
 	@Override
@@ -46,9 +49,11 @@ public class SearchActivity extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.search_view);
 
-		dataBase = DataBaseManager.instance();
+		database = DataBaseManager.instance();
 
-		Cursor cursor = dataBase.select(DBConsts.SQL_SELECT_BY_ID + DBConsts.SQL_ORDER_BY_NAME);
+		order_by = SharedPrefs.load(SHARED_PREFS_SORT_CRITERION, VALUE_ORDER_BY, DBConsts.SQL_ORDER_BY_NAME);
+
+		Cursor cursor = database.select(DBConsts.SQL_SELECT_BY_ID + order_by);
 		startManagingCursor(cursor);
 
 		ListAdapter adapter = new SearchListCursorAdapter(this, cursor);
@@ -64,7 +69,7 @@ public class SearchActivity extends Activity
 			{
 				ViewHolder holder = (ViewHolder) view.getTag();
 
-				Cursor cursor = dataBase.select(DBConsts.SQL_SELECT_BY_ID + DBConsts.SQL_AND_ID_EQUALS + holder.id);
+				Cursor cursor = database.select(DBConsts.SQL_SELECT_BY_ID + DBConsts.SQL_AND_ID_EQUALS + holder.id);
 				cursor.moveToNext();
 
 				Ingredient result = new Ingredient();
@@ -115,27 +120,31 @@ public class SearchActivity extends Activity
 
 			public void afterTextChanged(Editable box)
 			{
-				String search_term = box.toString();
-				String sql_stmt = null;
-				if (search_term == null || search_term.length() == 0)
-				{
-					sql_stmt = DBConsts.SQL_SELECT_BY_ID + DBConsts.SQL_ORDER_BY_NAME;
-				}
-				else
-				{
-					sql_stmt = DBConsts.SQL_SELECT_BY_ID + DBConsts.SQL_AND_NAME_LIKE + DatabaseUtils.sqlEscapeString("%" + search_term + "%") + DBConsts.SQL_ORDER_BY_NAME;
-				}
-
-				Cursor cursor = dataBase.select(sql_stmt);
-				startManagingCursor(cursor);
-
-				ListAdapter adapter = new SearchListCursorAdapter(SearchActivity.this, cursor);
-				search_list.setAdapter(adapter);
-				search_list.invalidate();
+				updateSearchList(box.toString());
 			}
 		});
 	}
 
+	private void updateSearchList(String search_term)
+	{
+		String sql_stmt = null;
+		if (search_term == null || search_term.length() == 0)
+		{
+			sql_stmt = DBConsts.SQL_SELECT_BY_ID + order_by;
+		}
+		else
+		{
+			sql_stmt = DBConsts.SQL_SELECT_BY_ID + DBConsts.SQL_AND_NAME_LIKE + DatabaseUtils.sqlEscapeString("%" + search_term + "%") + order_by;
+		}
+
+		Cursor cursor = database.select(sql_stmt);
+		startManagingCursor(cursor);
+
+		ListAdapter adapter = new SearchListCursorAdapter(SearchActivity.this, cursor);
+		search_list.setAdapter(adapter);
+		search_list.invalidate();
+	}
+	
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo)
 	{
@@ -227,10 +236,31 @@ public class SearchActivity extends Activity
 			Intent intent = new Intent(getBaseContext(), EditActivity.class);
 			startActivity(intent);
 			break;
+		case R.id.sort_db_entries:
+			changeSortCriterion();
+			break;
 		default:
 			return false;
 		}
 		return true;
+	}
+
+	private void changeSortCriterion()
+	{
+		final String[] sortCriteria = new String[] { getString(R.string.sort_criterion_name), getString(R.string.sort_criterion_uric_acid), getString(R.string.sort_criterion_kcal) };
+		final String[] orderBys = new String[] { DBConsts.SQL_ORDER_BY_NAME, DBConsts.SQL_ORDER_BY_URIC_ACID, DBConsts.SQL_ORDER_BY_KCAL };
+		SelectionDialog dialog = new SelectionDialog(this, R.string.dialog_sort, sortCriteria, false)
+		{
+			@Override
+			public boolean onSelection(int which)
+			{
+				order_by = orderBys[which];
+				SharedPrefs.save(SHARED_PREFS_SORT_CRITERION, VALUE_ORDER_BY, order_by);
+				updateSearchList(search_box.getText().toString());
+				return true;
+			}
+		};
+		dialog.show();
 	}
 
 	protected class SearchListCursorAdapter extends SimpleCursorAdapter

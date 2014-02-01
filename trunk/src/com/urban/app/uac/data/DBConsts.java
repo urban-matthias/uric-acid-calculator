@@ -17,6 +17,8 @@ public class DBConsts
 	public static final String	SQL_SELECT_BY_ID;
 	public static final String	SQL_DELETE_BY_ID;
 	public static final String	SQL_ORDER_BY_NAME;
+	public static final String	SQL_ORDER_BY_KCAL;
+	public static final String	SQL_ORDER_BY_URIC_ACID;
 	public static final String	SQL_AND_NAME_LIKE;
 	public static final String	SQL_AND_ID_EQUALS;
 	public static final String	SQL_WHERE_NAME_ID_EQUALS;
@@ -38,5 +40,7 @@ public class DBConsts
 		SQL_WHERE_NAME_ID_EQUALS = "WHERE " + name_id_col + "=";
 		SQL_WHERE_CONTENT_ID_EQUALS = "WHERE " + content_id_col + "=";
 		SQL_ORDER_BY_NAME = " ORDER BY " + name_name_col;
+		SQL_ORDER_BY_KCAL = " ORDER BY " + TABLE_CONTENT + "." + COLUMN_KCAL;
+		SQL_ORDER_BY_URIC_ACID = " ORDER BY " + TABLE_CONTENT + "." + COLUMN_URIC_ACID;
 	}
 }

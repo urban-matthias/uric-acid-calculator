@@ -26,12 +26,12 @@ public class Receipts
 
 	public static void saveCurrentReceipt(ArrayAdapter<Ingredient> receipt)
 	{
-		saveReceipt(LAST_RECEIPT, SHARED_PREFS_LAST, receipt);
+		saveReceipt(SHARED_PREFS_LAST, LAST_RECEIPT, receipt);
 	}
 
 	public static ArrayList<Ingredient> loadLastReceipt()
 	{
-		return loadReceipt(LAST_RECEIPT, SHARED_PREFS_LAST);
+		return loadReceipt(SHARED_PREFS_LAST, LAST_RECEIPT);
 	}
 
 	public static boolean exists(String name)
