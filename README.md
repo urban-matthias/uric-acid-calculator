@@ -1,37 +1,32 @@
-<html>
-<head>
-<title>Uric Acid Calculator</title>
-</head>
-<body>
+Uric Acid Calculator
+====================
 
-<h1>Uric Acid Calculator</h1>
+The Uric Acid Calculator for Android is an application that lets people suffering from gout calculate the uric acid produced by several foods.
 
-<p>The Uric Acid Calculator for Android is an application that lets people suffering from gout calculate the uric acid produced by several foods. </p>
+Gout, a form of arthritis, is a disease that is caused by too much uric acid in the blood. Uric acid is a natural waste product that occurs when the body breaks down certain types of foods which contain a class of chemicals called purines. See http://en.wikipedia.org/wiki/Gout for more information.
 
-<p>Gout, a form of arthritis, is a disease that is caused by too much uric acid in the blood. Uric acid is a natural waste product that occurs when the body breaks down certain types of foods which contain a class of chemicals called purines. See <a href="http://en.wikipedia.org/wiki/Gout" rel="nofollow">http://en.wikipedia.org/wiki/Gout</a> for more information. </p>
+Features
+--------
 
-<h2>Features</h2>
-<ul>
-<li>Intuitive user interface </li>
-<li>Large editable and filterable database of foods </li>
-<li>Save and load calculations </li>
-<li>Restore last calculation on start-up </li>
-<li>Limit check for summarized uric acid value </li>
-<li>Custom limit support </li>
-<li>Search filter favorites </li>
-<li>Support of multiple languages (currently German and English) </li>
-<li>Runs on Android 2.1 and above </li>
-</ul>
+  * Intuitive user interface
+  * Large editable and filterable database of foods
+  * Save and load calculations
+  * Restore last calculation on start-up
+  * Limit check for summarized uric acid value
+  * Custom limit support
+  * Search filter favorites
+  * Support of multiple languages (currently German and English)
+  * Runs on Android 2.1 and above
 
-<h2>Issues</h2>
-<ul>
-<li>Food names currently available in German only </li>
-<li>Unit of fluids (ml) not yet set correctly in database (all g) </li>
-</ul>
+Issues
+------
 
-<h2>Screenshots</h2>
+  * Food names currently available in German only
+  * Unit of fluids (ml) not yet set correctly in database (all g)
 
-<p>
+Screenshots
+-----------
+
 <table>
 <tr>
 <td style="border: 1px solid #ccc; padding: 5px;">Main window with a sample calculation.</td>
@@ -44,9 +39,7 @@
 <td style="border: 1px solid #ccc; padding: 5px;"><img src="https://googledrive.com/host/0B28kSDT4b69gR204cGVnOHc3TUU/MainViewRemoveFood.png" /></td>
 </tr>
 </table>
-</p>
 
-<p>
 <table>
 <tr>
 <td style="border: 1px solid #ccc; padding: 5px;">Load, save and delete calculations.</td>
@@ -59,9 +52,7 @@
 <td style="border: 1px solid #ccc; padding: 5px;"><img src="https://googledrive.com/host/0B28kSDT4b69gR204cGVnOHc3TUU/MainViewLimitReached.png" /></td
 ></tr>
 </table>
-</p>
 
-<p>
 <table>
 <tr>
 <td style="border: 1px solid #ccc; padding: 5px;">Add foods to the calculation.</td>
@@ -74,9 +65,7 @@
 <td style="border: 1px solid #ccc; padding: 5px;"><img src="https://googledrive.com/host/0B28kSDT4b69gR204cGVnOHc3TUU/SearchViewFavorites.png" /></td>
 </tr>
 </table>
-</p>
 
-<p>
 <table>
 <tr>
 <td style="border: 1px solid #ccc; padding: 5px;">Select a favorite search filter.</td>
@@ -90,7 +79,3 @@
 </td>
 </tr>
 </table>
-</p>
-
-</body>
-</html>
